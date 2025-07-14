@@ -9,6 +9,8 @@ function getNote() {
     currentQuestion.value = notes[id];
     emit("newQuestion", currentQuestion.value);
 }
+
+getNote();
 </script>
 
 <template>

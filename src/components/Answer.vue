@@ -1,18 +1,22 @@
 <script setup lang="ts">
-import { ref, defineEmits } from "vue";
+import { ref, defineEmits, defineProps } from "vue";
 import { getStrings } from "../scripts/getStrings";
+const emit = defineEmits(["sentAnswer"]);
+const props = defineProps(["blockedStrings"]);
+
 let strings = getStrings();
 let stringNames = ["e", "B", "G", "D", "A", "E"];
 // let fretboardNumbers = [0, , , 3, , 5, , 7, , 9, , , 12]; /* would be cool but it shifts the image */
-const emit = defineEmits(["sentAnswer"]);
 let clickedNote = ref<string>("");
 
 function displayNote(note: string) {
     let noteArr = note.split(".");
-    let onlyNote = noteArr[0];
-    let string = noteArr[1];
-    clickedNote.value = `${onlyNote} on ${string} string`;
-    emit("sentAnswer", clickedNote.value);
+    let answerObj = {
+        answer: noteArr[0],
+        string: noteArr[1],
+    };
+    clickedNote.value = `${answerObj.answer} on ${answerObj.string} string`;
+    emit("sentAnswer", answerObj);
 }
 </script>
 
@@ -21,9 +25,9 @@ function displayNote(note: string) {
         <div id="clickedNote">
             {{ clickedNote }}
         </div>
-        <v-table id="fretboard">
+        <v-table id="fretboard" class="bg-primary">
             <tbody>
-                <tr v-for="string in stringNames">
+                <tr v-for="string in stringNames" :class="string + 'string'">
                     <td @click="displayNote(`${string}.${string}`)">
                         {{ string }}
                     </td>
@@ -57,10 +61,7 @@ function displayNote(note: string) {
 }
 
 td {
-    border-right: 1px solid black;
-    border-left: 1px solid black;
-    border-top: 1px solid rgb(0, 0, 0);
-    border-bottom: 1px solid rgb(0, 0, 0);
+    border: 1px solid black;
 }
 
 td.correct {
