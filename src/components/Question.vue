@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { ref, defineEmits } from "vue";
-import { getStrings } from "../scripts/getStrings";
 const emit = defineEmits(["newQuestion"]);
-let strings = getStrings();
 const notes = ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"];
 let currentQuestion = ref<string>("");
 
@@ -14,8 +12,24 @@ function getNote() {
 </script>
 
 <template>
-    <h1>{{ currentQuestion }}</h1>
-    <v-btn @click="getNote()">New Question</v-btn>
+    <div id="questionDiv" class="bg-secondary">
+        <div id="questionContent">
+            <h1>Current Note: {{ currentQuestion ? currentQuestion : "?" }}</h1>
+            <v-btn @click="getNote()">New Question</v-btn>
+        </div>
+    </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+#questionDiv {
+    height: 200px;
+    display: flex;
+    background-color: gray;
+    justify-content: center;
+    align-items: center;
+}
+
+#questionContent {
+    text-align: center;
+}
+</style>
