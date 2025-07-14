@@ -1,5 +1,9 @@
 <script setup lang="ts">
+import { ref, defineEmits } from "vue";
+const emit = defineEmits(["newQuestion"]);
+
 const notes = ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"];
+let currentQuestion = ref<string>("");
 
 let stringNames = ["e", "B", "G", "D", "A", "E"];
 let strings: string[][] = [[], [], [], [], [], []];
@@ -22,8 +26,17 @@ for (let stringId = 0; stringId < strings.length; stringId++) {
         }
     }
 }
+
+function getNote() {
+    let id = Math.trunc(Math.random() * notes.length);
+    currentQuestion.value = notes[id];
+    emit("newQuestion", currentQuestion.value);
+}
 </script>
 
-<template></template>
+<template>
+    <h1>{{ currentQuestion }}</h1>
+    <v-btn @click="getNote()">New Question</v-btn>
+</template>
 
 <style scoped></style>
