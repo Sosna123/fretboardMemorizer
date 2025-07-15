@@ -15,7 +15,21 @@ const props = defineProps({
 
 let strings = getStrings();
 let stringNames = ["e", "B", "G", "D", "A", "E"];
-// let fretboardNumbers = [0, , , 3, , 5, , 7, , 9, , , 12]; /* would be cool but it shifts the image */
+let fretboardNumbers = [
+    0,
+    ,
+    ,
+    3,
+    ,
+    5,
+    ,
+    7,
+    ,
+    9,
+    ,
+    ,
+    12,
+]; /* would be cool but it shifts the image */
 let clickedNote = ref<string>("");
 
 function displayNote(note: string) {
@@ -41,7 +55,16 @@ function displayNote(note: string) {
                 <tr
                     v-for="string in stringNames"
                     :class="{ blocked: props.blockedStrings.includes(string) }">
-                    <td @click="displayNote(`${string}.${string}`)">
+                    <td
+                        @click="displayNote(`${string}.${string}`)"
+                        :class="{
+                            correct: props.clickedNotes.includes(
+                                `${string}.${string}.c`
+                            ),
+                            incorrect: props.clickedNotes.includes(
+                                `${string}.${string}.n`
+                            ),
+                        }">
                         {{ string }}
                     </td>
                     <td
@@ -57,9 +80,13 @@ function displayNote(note: string) {
                             ),
                         }"></td>
                 </tr>
-                <!-- <tr>
-                    <td v-for="number in fretboardNumbers">{{ number }}</td>  
-                </tr>  -->
+                <tr>
+                    <td
+                        v-for="number in fretboardNumbers"
+                        id="fretboardNumbers">
+                        {{ number }}
+                    </td>
+                </tr>
                 <!-- would be cool but it shifts the image -->
             </tbody>
         </v-table>
@@ -69,6 +96,7 @@ function displayNote(note: string) {
 <style scoped>
 #answerDiv {
     height: 50vh;
+    overflow: scroll;
 }
 
 #clickedNote {
@@ -80,10 +108,20 @@ function displayNote(note: string) {
 
 #fretboard {
     background-image: url("../assets/fretboard.png");
+    min-width: 1920px;
+    max-width: 1920px;
+    min-height: 364px;
+    max-height: 364px;
 }
 
 td {
-    border: 1px solid black;
+    width: calc(1920px / 13);
+    border: none !important;
+    /* border: 1px solid black; */
+}
+
+#fretboardNumbers {
+    text-align: center;
 }
 
 td.correct {

@@ -2,7 +2,6 @@
 import { ref } from "vue";
 import Question from "./components/Question.vue";
 import Answer from "./components/Answer.vue";
-// import { ref, watch } from "vue";
 
 let currentQuestion = "";
 let blockedStrings = ref<string[]>([]);
@@ -19,11 +18,9 @@ function checkAnswer(i: { answer: string; string: string }) {
     let string = i.string;
     if (!blockedStrings.value.includes(string)) {
         if (answer === currentQuestion) {
-            console.log("cool");
             blockedStrings.value.push(string);
             clickedNotes.value.push(`${answer}.${string}.c`);
         } else {
-            console.log("uncool");
             clickedNotes.value.push(`${answer}.${string}.n`);
         }
     }
