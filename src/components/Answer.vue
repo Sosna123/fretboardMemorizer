@@ -1,8 +1,17 @@
 <script setup lang="ts">
-import { ref, defineEmits, defineProps } from "vue";
+import { ref } from "vue";
 import { getStrings } from "../scripts/getStrings";
 const emit = defineEmits(["sentAnswer"]);
-const props = defineProps(["blockedStrings"]);
+const props = defineProps({
+    blockedStrings: {
+        type: Array as () => string[],
+        default: () => [],
+    },
+    clickedNotes: {
+        type: Array as () => string[],
+        default: () => [],
+    },
+});
 
 let strings = getStrings();
 let stringNames = ["e", "B", "G", "D", "A", "E"];
@@ -15,8 +24,10 @@ function displayNote(note: string) {
         answer: noteArr[0],
         string: noteArr[1],
     };
-    clickedNote.value = `${answerObj.answer} on ${answerObj.string} string`;
-    emit("sentAnswer", answerObj);
+    if (!props.blockedStrings.includes(answerObj.string)) {
+        clickedNote.value = `${answerObj.answer} on ${answerObj.string} string`;
+        emit("sentAnswer", answerObj);
+    }
 }
 </script>
 
@@ -27,13 +38,24 @@ function displayNote(note: string) {
         </div>
         <v-table id="fretboard" class="bg-primary">
             <tbody>
-                <tr v-for="string in stringNames" :class="string + 'string'">
+                <tr
+                    v-for="string in stringNames"
+                    :class="{ blocked: props.blockedStrings.includes(string) }">
                     <td @click="displayNote(`${string}.${string}`)">
                         {{ string }}
                     </td>
                     <td
                         v-for="notes in strings[stringNames.indexOf(string)]"
-                        @click="displayNote(`${notes}.${string}`)"></td>
+                        @click="displayNote(`${notes}.${string}`)"
+                        :id="`${notes}.${string}`"
+                        :class="{
+                            correct: props.clickedNotes.includes(
+                                `${notes}.${string}.c`
+                            ),
+                            incorrect: props.clickedNotes.includes(
+                                `${notes}.${string}.n`
+                            ),
+                        }"></td>
                 </tr>
                 <!-- <tr>
                     <td v-for="number in fretboardNumbers">{{ number }}</td>  
@@ -70,7 +92,7 @@ td.correct {
 td.incorrect {
     background-color: rgba(255, 0, 0, 0.25);
 }
-td.blocked {
+tr.blocked {
     background-color: rgba(150, 150, 150, 0.25);
 }
 </style>
