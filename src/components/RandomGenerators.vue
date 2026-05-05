@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { randomNote, randomKey, getRelativeMajorOfMinorKey, randomChordFromMajorKey } from "../scripts/noteScripts";
+import { type GeneralChordType, randomNote, randomKey, getRelativeMajorOfMinorKey, randomChordFromMajorKey } from "../scripts/noteScripts";
 
 const notes = ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"];
 const keyTypes = ["major", "minor"];
 
 let currRandomNote = ref<string>("");
 let currRandomKey = ref<string>("");
+
 let currKeyRoot = ref<string>("C");
 let currKeyType = ref<string>("major");
+let possibleChordTypes = ref<GeneralChordType[]>(["normal", "7", "sus"]);
 let currChordOfKey = ref<string>("");
 
 function randomChordFromKey() {
@@ -17,7 +19,7 @@ function randomChordFromKey() {
         key = getRelativeMajorOfMinorKey(currKeyRoot.value);
     }
 
-    return randomChordFromMajorKey(key);
+    return randomChordFromMajorKey(key, possibleChordTypes.value);
 }
 
 // start with everything random
@@ -46,6 +48,7 @@ currChordOfKey.value = randomChordFromKey();
                 <v-select :items="notes" v-model="currKeyRoot"></v-select>
                 <v-select :items="keyTypes" v-model="currKeyType"></v-select>
             </div>
+            <v-select multiple chips title="Chord Types" :items="['normal', '7', 'sus']" v-model="possibleChordTypes"></v-select>
             <v-btn @click="currChordOfKey = randomChordFromKey()">New Chord</v-btn>
         </div>
     </div>

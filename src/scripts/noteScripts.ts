@@ -1,10 +1,32 @@
 // "" = major / "m" = minor
+type GeneralChordType = "normal" | "7" | "sus";
 type ChordType = "" | "m" | "dim" | "7" | "m7" | "maj7" | "sus2" | "sus4";
 
 type Chord = {
     root: string;
-    type: ChordType[] | null;
+    type: ChordType[];
 };
+
+function convertGeneralChordTypeToChordType(generalChordTypes: GeneralChordType[]): ChordType[] {
+    let chordTypes: ChordType[] = [];
+
+    if (generalChordTypes.includes("normal")) {
+        chordTypes.push("");
+        chordTypes.push("m");
+        chordTypes.push("dim");
+    }
+    if (generalChordTypes.includes("7")) {
+        chordTypes.push("7");
+        chordTypes.push("m7");
+        chordTypes.push("maj7");
+    }
+    if (generalChordTypes.includes("sus")) {
+        chordTypes.push("sus2");
+        chordTypes.push("sus4");
+    }
+
+    return chordTypes;
+}
 
 const notes = ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"];
 
@@ -66,7 +88,7 @@ function getChordsInMajorKey(key: string): Chord[] {
     for (let i = 0; i < 7; i++) {
         let chord: Chord = {
             root: "",
-            type: null,
+            type: [],
         };
 
         chord.root = notesStartingOnKey[notesOfKey[i] % notesStartingOnKey.length];
@@ -83,7 +105,6 @@ function getChordsInMajorKey(key: string): Chord[] {
             case 3:
                 chord.type = ["m", "m7", "sus4"];
                 break;
-
             case 5:
                 chord.type = ["", "7", "sus2", "sus4"];
                 break;
@@ -104,14 +125,37 @@ function getRelativeMajorOfMinorKey(minorKey: string): string {
     return notes[(minorKeyId + 3) % notes.length];
 }
 
-function randomChordFromMajorKey(majorKey: string): string {
+function randomChordFromMajorKey(majorKey: string, possibleTypes: GeneralChordType[] = []): string {
     const chords: Chord[] = getChordsInMajorKey(majorKey);
 
     let randomChord: Chord = chords[Math.trunc(Math.random() * chords.length)];
-    let randomChordType: string = randomChord.type![Math.trunc(Math.random() * randomChord.type!.length)];
+    let randomChordType = randomChord.type[Math.trunc(Math.random() * randomChord.type.length)];
+
+    if (possibleTypes.length > 0) {
+        const possibleTypesAll = convertGeneralChordTypeToChordType(possibleTypes);
+
+        while (true) {
+            let typesIncluded = 0;
+            randomChord.type.forEach((type) => {
+                if (possibleTypesAll.includes(type)) {
+                    typesIncluded++;
+                }
+            });
+
+            if (typesIncluded > 0) {
+                break;
+            }
+
+            randomChord = chords[Math.trunc(Math.random() * chords.length)];
+        }
+
+        while (!possibleTypesAll.includes(randomChordType as ChordType)) {
+            randomChordType = randomChord.type[Math.trunc(Math.random() * randomChord.type.length)];
+        }
+    }
 
     let randomChordText = randomChord.root + randomChordType;
     return randomChordText;
 }
 
-export { type Chord, getStrings, randomNote, randomKey, getChordsInMajorKey, getRelativeMajorOfMinorKey, randomChordFromMajorKey };
+export { type Chord, type ChordType, type GeneralChordType, convertGeneralChordTypeToChordType, getStrings, randomNote, randomKey, getChordsInMajorKey, getRelativeMajorOfMinorKey, randomChordFromMajorKey };
