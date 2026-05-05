@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { getStrings } from "../../scripts/noteScripts";
+import { getStrings } from "../scripts/noteScripts";
 const emit = defineEmits(["sentAnswer"]);
 const props = defineProps({
     blockedStrings: {
@@ -11,11 +11,15 @@ const props = defineProps({
         type: Array as () => string[],
         default: () => [],
     },
+    freeplay: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 let strings = getStrings();
 let stringNames = ["e", "B", "G", "D", "A", "E"];
-let fretboardNumbers = [0, , , 3, , 5, , 7, , 9, , , 12]; /* would be cool but it shifts the image */
+let fretboardNumbers = [0, , , 3, , 5, , 7, , 9, , , 12];
 let clickedNote = ref<string>("");
 
 function displayNote(note: string) {
@@ -61,7 +65,6 @@ function displayNote(note: string) {
                         {{ number }}
                     </td>
                 </tr>
-                <!-- would be cool but it shifts the image -->
             </tbody>
         </v-table>
     </div>
@@ -81,8 +84,7 @@ function displayNote(note: string) {
 }
 
 #fretboard {
-    /* background-image: url("../assets/fretboard.png"); */
-    background-image: url("../../assets/fretboard.png");
+    background-image: url("../assets/fretboard.png");
     min-width: 1920px;
     max-width: 1920px;
     min-height: 364px;
@@ -102,9 +104,11 @@ td {
 td.correct {
     background-color: rgba(0, 255, 0, 0.25);
 }
+
 td.incorrect {
     background-color: rgba(255, 0, 0, 0.25);
 }
+
 tr.blocked {
     background-color: rgba(150, 150, 150, 0.25);
 }

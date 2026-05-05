@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import Question from "./FretboardNotesQuestion.vue";
-import Answer from "./Fretboard.vue";
+import Answer from "../Fretboard.vue";
 
 let currentQuestion = "";
 let blockedStrings = ref<string[]>([]);

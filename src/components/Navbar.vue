@@ -6,8 +6,12 @@ type Route = {
 
 const possibleRoutes: Route[] = [
     {
-        name: "Notes of the Fretboard",
+        name: "Fretboard Marking",
         path: "/",
+    },
+    {
+        name: "Memorizing notes of the Fretboard",
+        path: "/memorizingFretboard",
     },
     {
         name: "Random Note / Key",

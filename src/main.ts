@@ -30,10 +30,12 @@ const vuetify = createVuetify({
 
 import { createWebHistory, createRouter } from "vue-router";
 import FretboardNotes from "./components/FretboardNotes/FretboardNotes.vue";
+import FreeplayFretboard from "./components/FreeplayFretboard.vue";
 import RandomGenerators from "./components/RandomGenerators.vue";
 
 const routes = [
-    { path: "/", name: "fretboardNotes", component: FretboardNotes },
+    { path: "/", name: "fretboard", component: FreeplayFretboard },
+    { path: "/memorizingFretboard", name: "fretboardMemorizing", component: FretboardNotes },
     { path: "/random", name: "randomGenerators", component: RandomGenerators },
 ];
 
