@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { getStrings } from "../../scripts/getStrings";
+import { getStrings } from "../../scripts/noteScripts";
 const emit = defineEmits(["sentAnswer"]);
 const props = defineProps({
     blockedStrings: {

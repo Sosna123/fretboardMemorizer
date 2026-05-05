@@ -3,8 +3,17 @@ import Navbar from "./components/Navbar.vue";
 </script>
 
 <template>
-    <Navbar />
-    <router-view />
+    <div id="websiteBg" class="bg-secondary">
+        <Navbar />
+        <router-view />
+    </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+#websiteBg {
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+}
+</style>

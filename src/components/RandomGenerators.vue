@@ -1,38 +1,52 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { type Chord, randomNote, randomKey, getChordsInMajorKey, getRelativeMajorOfMinorKey, randomChordFromMajorKey } from "../scripts/noteScripts";
+
+const notes = ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"];
+const keyTypes = ["major", "minor"];
 
 let currRandomNote = ref<string>("");
 let currRandomKey = ref<string>("");
+let currKeyRoot = ref<string>("C");
+let currKeyType = ref<string>("major");
+let currChordOfKey = ref<string>("");
 
-function randomNote() {
-    let notes = ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"];
-    let id = Math.trunc(Math.random() * notes.length);
-    currRandomNote.value = notes[id];
-}
+function randomChordFromKey() {
+    let key = currKeyRoot.value;
+    if (currKeyType.value == "minor") {
+        key = getRelativeMajorOfMinorKey(currKeyRoot.value);
+    }
 
-function randomKey() {
-    let notes = ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"];
-    let id = Math.trunc(Math.random() * notes.length);
-    let majorMinor = Math.random() > 0.5 ? "major" : "minor";
-    currRandomKey.value = `${notes[id]} ${majorMinor}`;
+    return randomChordFromMajorKey(key);
 }
 
 // start with everything random
-randomNote();
-randomKey();
+currRandomNote.value = randomNote();
+currRandomKey.value = randomKey();
+currChordOfKey.value = randomChordFromKey();
 </script>
 
 <template>
     <div class="questionDiv bg-secondary">
         <div class="questionContent">
             <h1>Random Note: {{ currRandomNote }}</h1>
-            <v-btn @click="randomNote()">New Note</v-btn>
+            <v-btn @click="currRandomNote = randomNote()">New Note</v-btn>
         </div>
     </div>
     <div class="questionDiv bg-secondary">
         <div class="questionContent">
             <h1>Random Key: {{ currRandomKey }}</h1>
-            <v-btn @click="randomKey()">New Key</v-btn>
+            <v-btn @click="currRandomKey = randomKey()">New Key</v-btn>
+        </div>
+    </div>
+    <div class="questionDiv bg-secondary">
+        <div class="questionContent">
+            <h1>Random Chord in Key: {{ currChordOfKey }}</h1>
+            <div id="keySelects">
+                <v-select :items="notes" v-model="currKeyRoot"></v-select>
+                <v-select :items="keyTypes" v-model="currKeyType"></v-select>
+            </div>
+            <v-btn @click="currChordOfKey = randomChordFromKey()">New Chord</v-btn>
         </div>
     </div>
 </template>
@@ -48,5 +62,10 @@ randomKey();
 
 .questionContent {
     text-align: center;
+}
+
+#keySelects {
+    display: flex;
+    justify-content: center;
 }
 </style>
