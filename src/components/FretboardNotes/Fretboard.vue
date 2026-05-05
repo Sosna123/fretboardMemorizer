@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { getStrings } from "../scripts/getStrings";
+import { getStrings } from "../../scripts/getStrings";
 const emit = defineEmits(["sentAnswer"]);
 const props = defineProps({
     blockedStrings: {
@@ -15,21 +15,7 @@ const props = defineProps({
 
 let strings = getStrings();
 let stringNames = ["e", "B", "G", "D", "A", "E"];
-let fretboardNumbers = [
-    0,
-    ,
-    ,
-    3,
-    ,
-    5,
-    ,
-    7,
-    ,
-    9,
-    ,
-    ,
-    12,
-]; /* would be cool but it shifts the image */
+let fretboardNumbers = [0, , , 3, , 5, , 7, , 9, , , 12]; /* would be cool but it shifts the image */
 let clickedNote = ref<string>("");
 
 function displayNote(note: string) {
@@ -52,18 +38,12 @@ function displayNote(note: string) {
         </div>
         <v-table id="fretboard" class="bg-primary">
             <tbody>
-                <tr
-                    v-for="string in stringNames"
-                    :class="{ blocked: props.blockedStrings.includes(string) }">
+                <tr v-for="string in stringNames" :class="{ blocked: props.blockedStrings.includes(string) }">
                     <td
                         @click="displayNote(`${string}.${string}`)"
                         :class="{
-                            correct: props.clickedNotes.includes(
-                                `${string}.${string}.c`
-                            ),
-                            incorrect: props.clickedNotes.includes(
-                                `${string}.${string}.n`
-                            ),
+                            correct: props.clickedNotes.includes(`${string}.${string}.c`),
+                            incorrect: props.clickedNotes.includes(`${string}.${string}.n`),
                         }">
                         {{ string }}
                     </td>
@@ -72,18 +52,12 @@ function displayNote(note: string) {
                         @click="displayNote(`${notes}.${string}`)"
                         :id="`${notes}.${string}`"
                         :class="{
-                            correct: props.clickedNotes.includes(
-                                `${notes}.${string}.c`
-                            ),
-                            incorrect: props.clickedNotes.includes(
-                                `${notes}.${string}.n`
-                            ),
+                            correct: props.clickedNotes.includes(`${notes}.${string}.c`),
+                            incorrect: props.clickedNotes.includes(`${notes}.${string}.n`),
                         }"></td>
                 </tr>
                 <tr>
-                    <td
-                        v-for="number in fretboardNumbers"
-                        id="fretboardNumbers">
+                    <td v-for="number in fretboardNumbers" id="fretboardNumbers">
                         {{ number }}
                     </td>
                 </tr>
@@ -107,7 +81,8 @@ function displayNote(note: string) {
 }
 
 #fretboard {
-    background-image: url("../assets/fretboard.png");
+    /* background-image: url("../assets/fretboard.png"); */
+    background-image: url("../../assets/fretboard.png");
     min-width: 1920px;
     max-width: 1920px;
     min-height: 364px;

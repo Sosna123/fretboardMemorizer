@@ -28,4 +28,18 @@ const vuetify = createVuetify({
     },
 });
 
-createApp(App).use(vuetify).mount("#app");
+import { createWebHistory, createRouter } from "vue-router";
+import FretboardNotes from "./components/FretboardNotes/FretboardNotes.vue";
+import RandomGenerators from "./components/RandomGenerators.vue";
+
+const routes = [
+    { path: "/", name: "fretboardNotes", component: FretboardNotes },
+    { path: "/random", name: "randomGenerators", component: RandomGenerators },
+];
+
+export const router = createRouter({
+    history: createWebHistory(),
+    routes,
+});
+
+createApp(App).use(vuetify).use(router).mount("#app");
