@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { type Chord, randomNote, randomKey, getChordsInMajorKey, getRelativeMajorOfMinorKey, randomChordFromMajorKey } from "../scripts/noteScripts";
+import { randomNote, randomKey, getRelativeMajorOfMinorKey, randomChordFromMajorKey } from "../scripts/noteScripts";
 
 const notes = ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"];
 const keyTypes = ["major", "minor"];
