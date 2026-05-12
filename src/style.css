@@ -1,0 +1,16 @@
+.questionDiv {
+    height: 200px;
+    display: flex;
+    background-color: gray;
+    justify-content: center;
+    align-items: center;
+}
+
+.questionContent {
+    text-align: center;
+}
+
+#keySelects {
+    display: flex;
+    justify-content: center;
+}

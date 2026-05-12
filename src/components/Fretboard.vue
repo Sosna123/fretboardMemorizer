@@ -44,10 +44,10 @@ function displayNote(note: string) {
             <tbody>
                 <tr v-for="string in stringNames" :class="{ blocked: props.blockedStrings.includes(string) }">
                     <td
-                        @click="displayNote(`${string}.${string}`)"
+                        @click="displayNote(`${string.toUpperCase()}.${string}`)"
                         :class="{
-                            correct: props.clickedNotes.includes(`${string}.${string}.c`),
-                            incorrect: props.clickedNotes.includes(`${string}.${string}.n`),
+                            correct: props.clickedNotes.includes(`${string.toUpperCase()}.${string}.c`),
+                            incorrect: props.clickedNotes.includes(`${string.toUpperCase()}.${string}.n`),
                         }">
                         {{ string }}
                     </td>

@@ -45,7 +45,7 @@ function getStrings() {
             }
 
             if (addNotes) {
-                string.push(notes[noteCount]);
+                string.push(notes[noteCount].toUpperCase());
             }
 
             if (stringNames[stringId].toUpperCase() == notes[i]) {
@@ -53,6 +53,7 @@ function getStrings() {
             }
         }
     }
+    console.log(strings);
     return strings;
 }
 
@@ -67,7 +68,7 @@ function randomKey(): string {
     return `${notes[id]} ${majorMinor}`;
 }
 
-function getChordsInMajorKey(key: string): Chord[] {
+function getNotesInMajorKey(key: string): string[] {
     const notesStartingOnKey = [];
     for (let i = 0; i < notes.length * 2; i++) {
         if (notesStartingOnKey.length >= 12) {
@@ -81,7 +82,18 @@ function getChordsInMajorKey(key: string): Chord[] {
         notesStartingOnKey.push(notes[i % notes.length]);
     }
 
-    const notesOfKey = [0, 2, 4, 5, 7, 9, 11];
+    const notesOfKeyIndexes = [0, 2, 4, 5, 7, 9, 11];
+    let notesOfKey = [];
+
+    for (let i = 0; i < notesOfKeyIndexes.length; i++) {
+        notesOfKey.push(notesStartingOnKey[notesOfKeyIndexes[i]]);
+    }
+
+    return notesOfKey;
+}
+
+function getChordsInMajorKey(key: string): Chord[] {
+    const notesOfKey = getNotesInMajorKey(key);
 
     const chords: Chord[] = [];
 
@@ -91,7 +103,7 @@ function getChordsInMajorKey(key: string): Chord[] {
             type: [],
         };
 
-        chord.root = notesStartingOnKey[notesOfKey[i] % notesStartingOnKey.length];
+        chord.root = notesOfKey[i];
 
         switch (i + 1) {
             case 1:
@@ -158,4 +170,4 @@ function randomChordFromMajorKey(majorKey: string, possibleTypes: GeneralChordTy
     return randomChordText;
 }
 
-export { type Chord, type ChordType, type GeneralChordType, convertGeneralChordTypeToChordType, getStrings, randomNote, randomKey, getChordsInMajorKey, getRelativeMajorOfMinorKey, randomChordFromMajorKey };
+export { type Chord, type ChordType, type GeneralChordType, convertGeneralChordTypeToChordType, getStrings, randomNote, randomKey, getNotesInMajorKey, getChordsInMajorKey, getRelativeMajorOfMinorKey, randomChordFromMajorKey };
